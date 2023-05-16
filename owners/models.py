@@ -11,7 +11,7 @@ class Owner(models.Model):
     image = models.ImageField(
         upload_to='images/', default='../default_profile_cjqose'
     )
-    content = models.TextField(blank=True)  
+    about = models.TextField(blank=True)  
 
     class Meta:
         ordering = ['-created_at']

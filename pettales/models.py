@@ -13,7 +13,7 @@ class PetTale(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(
-        upload_to='images/', default='../default_profile_htulnf', blank=True
+        upload_to='images/', default='../default_post_htulnf', blank=True
     )
     tale = models.TextField(null=False)
 

@@ -13,7 +13,7 @@ class PetPic(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     image = models.ImageField(
-        upload_to='images/', default='../default_profile_htulnf', null=False
+        upload_to='images/', default='../default_post_htulnf', null=False
     )
     description = models.CharField(max_length=255, blank=True)
 

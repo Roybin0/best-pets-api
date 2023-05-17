@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import PetStory
+from .models import PetTale
 
 
-class PetStorySerializer(serializers.ModelSerializer):
+class PetTaleSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     is_owner = serializers.SerializerMethodField()
     owner_id = serializers.ReadOnlyField(source='owner.owner.id')
@@ -33,7 +33,7 @@ class PetStorySerializer(serializers.ModelSerializer):
         return request.user == obj.owner
     
     class Meta:
-        model = PetStory
+        model = PetTale
         fields = [
             'id', 'owner', 'pet_id', 'pet_name', 'pet_type', 'created_at', 
             'updated_at', 'image', 'content', 'is_owner', 'owner_id',

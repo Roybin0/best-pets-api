@@ -56,7 +56,8 @@ INSTALLED_APPS = [
     'owners',
     'pets',
     'petpics',
-    'petstories',
+    'pettales',
+
 ]
 
 MIDDLEWARE = [

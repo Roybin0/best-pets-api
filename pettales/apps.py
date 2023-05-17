@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class PetstoriesConfig(AppConfig):
+class PettalesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'petstories'
+    name = 'pettales'

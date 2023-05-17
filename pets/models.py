@@ -28,4 +28,4 @@ class Pet(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"{self.owner}'s pet {self.pet_type}"
+        return f"{self.owner}'s {self.pet_type} {self.name}"

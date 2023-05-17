@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import PetPic
+from pets.models import Pet
 
 
 class PetPicSerializer(serializers.ModelSerializer):
@@ -7,9 +8,15 @@ class PetPicSerializer(serializers.ModelSerializer):
     is_owner = serializers.SerializerMethodField()
     owner_id = serializers.ReadOnlyField(source='owner.owner.id')
     owner_profile_image = serializers.ReadOnlyField(source='owner.owner.image.url')
-    pet_id = serializers.ReadOnlyField(source='owner.pet.id')
-    pet_name = serializers.ReadOnlyField(source='owner.pet.name')
-    pet_type = serializers.ReadOnlyField(source='owner.pet.type')
+    pet_id = serializers.PrimaryKeyRelatedField(queryset=Pet.objects.all())
+    pet_name = serializers.ReadOnlyField(source='pet.name')
+    pet_type = serializers.ReadOnlyField(source='pet.pet_type')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.context.get('request'):
+            user = self.context['request'].user
+            self.fields['pet_id'].queryset = Pet.objects.filter(owner=user)
 
     def validate_image(self, value):
         if value.size > 1024 * 1024 * 2:

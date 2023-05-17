@@ -9,8 +9,8 @@ class PetTaleSerializer(serializers.ModelSerializer):
     owner_id = serializers.ReadOnlyField(source='owner.owner.id')
     owner_profile_image = serializers.ReadOnlyField(source='owner.owner.image.url')
     pet = serializers.PrimaryKeyRelatedField(queryset=Pet.objects.all())
-    pet_name = serializers.ReadOnlyField(source='owner.pet.name')
-    pet_type = serializers.ReadOnlyField(source='owner.pet.type')
+    pet_name = serializers.ReadOnlyField(source='pet.name')
+    pet_type = serializers.ReadOnlyField(source='pet.pet_type')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

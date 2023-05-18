@@ -21,4 +21,4 @@ class PetPic(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"{self.name}'s pic by {self.owner}"
+        return f"{self.pet.name}'s pic by {self.owner}"

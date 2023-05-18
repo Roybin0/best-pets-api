@@ -21,4 +21,4 @@ class PetTale(models.Model):
         ordering = ['-created_at']
 
     def __str__(self):
-        return f"{self.name}'s tale by {self.owner}"
+        return f"{self.pet.name}'s tale by {self.owner}"

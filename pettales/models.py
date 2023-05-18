@@ -5,7 +5,7 @@ from pets.models import Pet
 
 class PetTale(models.Model):
     """
-    Pet story model related to User and Pet. 
+    Pet tales model related to User and Pet. 
     """
 
     owner = models.ForeignKey(User, on_delete=models.CASCADE)

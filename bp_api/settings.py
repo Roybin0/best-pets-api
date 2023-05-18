@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'pets',
     'petpics',
     'pettales',
+    'comments',
 
 ]
 

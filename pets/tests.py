@@ -29,7 +29,7 @@ class PetListViewTest(APITestCase):
 
     def test_create_pet_unauthenticated(self):
         data = {
-            'name': 'Fluffy',
+            'name': 'Luna',
             'pet_type': 'Cat',
             'image': '<image-data>',
             'about': 'A cute cat'
@@ -52,8 +52,13 @@ class PetListViewTest(APITestCase):
     def test_list_all_pets(self):
         response = self.client.get('/pets/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        # Add more assertions to verify the response data
+        
 
+
+class PetDetailViewTest(APITestCase):
+    def setUp(self):
+        User.objects.create_user(username='test', password='pass')
+        
     def test_get_pet_by_id(self):
         user = User.objects.get(username='test')
         pet = Pet.objects.create(owner=user, name='Luna', pet_type='Cat')

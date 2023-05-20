@@ -1,15 +1,21 @@
 from rest_framework import serializers
+from django.contrib.contenttypes.models import ContentType
 from .models import PetPic
 from pets.models import Pet
+from likes.models import Like
 
 
 class PetPicSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
     is_owner = serializers.SerializerMethodField()
     owner_id = serializers.ReadOnlyField(source='owner.owner.id')
     owner_profile_image = serializers.ReadOnlyField(source='owner.owner.image.url')
     pet = serializers.PrimaryKeyRelatedField(queryset=Pet.objects.all())
     pet_name = serializers.ReadOnlyField(source='pet.name')
     pet_type = serializers.ReadOnlyField(source='pet.pet_type')
+    like_id = serializers.SerializerMethodField()
+    comments_count = serializers.ReadOnlyField()
+    likes_count = serializers.ReadOnlyField()
 
     # Set owner automatically based on current logged in user
     def __init__(self, *args, **kwargs):
@@ -44,11 +50,21 @@ class PetPicSerializer(serializers.ModelSerializer):
     def get_is_owner(self, obj):
         request = self.context['request']
         return request.user == obj.owner
+
+    def get_like_id(self, obj):
+        request = self.context.get('request')
+        user = request.user if request and request.user.is_authenticated else None
+        if user:
+            like = Like.objects.filter(
+                owner=user, content_type=ContentType.objects.get_for_model(PetPic), object_id=obj.id
+            ).first()
+            return like.id if like else None
+        return None
     
     class Meta:
         model = PetPic
         fields = [
-            'id', 'pet', 'pet_id', 'pet_name', 'pet_type', 'created_at', 
+            'id', 'owner', 'pet', 'pet_id', 'pet_name', 'pet_type', 'created_at', 
             'updated_at', 'image', 'description', 'is_owner', 'owner_id',
-            'owner_profile_image',
+            'owner_profile_image', 'like_id', 'comments_count', 'likes_count',
         ]

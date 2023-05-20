@@ -8,7 +8,7 @@ class Like(models.Model):
     Like model, related to Owner and any content type,
     such as PetTale or PetPic. Future content may be added. 
     """
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')

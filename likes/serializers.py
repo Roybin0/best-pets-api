@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from rest_framework import serializers
 from django.contrib.contenttypes.models import ContentType
 from .models import Like
@@ -48,5 +49,10 @@ class LikeSerializer(serializers.ModelSerializer):
             like.content_type = ContentType.objects.get_for_model(PetPic)
             like.object_id = pet_pic_id.pk
 
-        like.save()
+        try:
+            like.save()
+        except IntegrityError:
+            raise serializers.ValidationError({
+                'detail': 'Possible duplicate'
+            })
         return like

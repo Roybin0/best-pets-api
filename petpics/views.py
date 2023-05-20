@@ -26,7 +26,7 @@ class PetPicList(generics.ListCreateAPIView):
     filterset_fields = [
         'owner__followed__owner__owner',
         'likes__owner',
-        'owner__profile',
+        'owner__owner',
     ]
 
     ordering_fields = [

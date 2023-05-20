@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericRelation
 from pets.models import Pet
+from likes.models import Like
 
 
 class PetPic(models.Model):
@@ -16,6 +18,7 @@ class PetPic(models.Model):
         upload_to='images/', default='../default_post_htulnf', null=False
     )
     description = models.CharField(max_length=255, blank=True)
+    likes = GenericRelation(Like, related_query_name='pet_pics') 
 
     class Meta:
         ordering = ['-created_at']

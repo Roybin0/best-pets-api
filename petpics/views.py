@@ -19,14 +19,15 @@ class PetPicList(generics.ListCreateAPIView):
 
     search_fields = [
         'owner__username',
-        'pet',
+        'pet__name',
+        'pet__pet_type'
     ]
 
-    # filterset_fields = [
-    #     'owner__followed__owner__owner',
-    #     'likes__owner__owner',
-    #     'owner__owner',
-    # ]
+    filterset_fields = [
+        'owner__followed__owner__owner',
+        'likes__owner',
+        'owner__profile',
+    ]
 
     ordering_fields = [
         'comments_count',

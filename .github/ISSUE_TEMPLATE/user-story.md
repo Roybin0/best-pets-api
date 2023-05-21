@@ -7,4 +7,4 @@ assignees: ''
 
 ---
 
-As an **authenticated user**, I can **feature** so that I can**benefit**.
+As an **authenticated user**, I can **feature** so that I can **benefit**.

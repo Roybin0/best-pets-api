@@ -20,7 +20,7 @@ class PetList(generics.ListCreateAPIView):
     search_fields = [
         'name',
         'pet_type',
-        'owner',
+        'owner__username',
     ]
 
     filterset_fields = [

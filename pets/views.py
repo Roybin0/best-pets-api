@@ -28,6 +28,18 @@ class PetList(generics.ListCreateAPIView):
         'name',
         'pet_type',
     ]
+    
+    def filter_queryset(self, queryset):
+        queryset = super().filter_queryset(queryset)
+
+        # Retrieve the value of the 'owner__username' query parameter
+        owner_username = self.request.query_params.get('owner__username')
+
+        if owner_username:
+            # Filter the queryset by owner username using case-insensitive matching
+            queryset = queryset.filter(owner__username__iexact=owner_username)
+
+        return queryset
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)

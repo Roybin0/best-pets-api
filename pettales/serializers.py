@@ -60,6 +60,6 @@ class PetTaleSerializer(serializers.ModelSerializer):
         model = PetTale
         fields = [
             'id', 'owner', 'pet', 'pet_name', 'pet_type', 'created_at', 
-            'updated_at', 'image', 'tale', 'is_owner', 'owner_id',
+            'updated_at', 'image', 'tldr', 'tale', 'is_owner', 'owner_id',
             'owner_profile_image', 'like_id', 'comments_count', 'likes_count',
         ]

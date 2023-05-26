@@ -17,6 +17,7 @@ class PetTale(models.Model):
     image = models.ImageField(
         upload_to='images/', default='../default_post_htulnf', blank=True
     )
+    tldr = models.CharField(max_length=255, blank=False)
     tale = models.TextField(null=False)
     likes = GenericRelation(Like, related_query_name='pet_tales') 
 

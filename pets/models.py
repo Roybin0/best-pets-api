@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from likes.models import Like
 from django.contrib.contenttypes.fields import GenericRelation
+from likes.models import Like
 
 
 pet_type_choices = [

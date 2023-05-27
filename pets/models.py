@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from likes.models import Like
+from django.contrib.contenttypes.fields import GenericRelation
 
 
 pet_type_choices = [
@@ -23,6 +25,7 @@ class Pet(models.Model):
         upload_to='images/', default='../default_profile_cjqose'
     )
     about = models.TextField(blank=True)
+    likes = GenericRelation(Like, related_query_name='pets') 
 
     class Meta:
         ordering = ['-created_at']

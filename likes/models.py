@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class Like(models.Model):
     """
     Like model, related to Owner and any content type,
-    such as PetTale or PetPic. Future content may be added. 
+    such as Pet, PetTale or PetPic. Future content may be added. 
     """
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes')
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)

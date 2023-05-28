@@ -25,7 +25,7 @@ class Pet(models.Model):
         upload_to='images/', default='../default_profile_cjqose'
     )
     about = models.TextField(blank=True)
-    likes = GenericRelation(Like, related_query_name='pets') 
+    likes = GenericRelation(Like, related_query_name='pet') 
 
     class Meta:
         ordering = ['-created_at']

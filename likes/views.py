@@ -10,6 +10,7 @@ class LikeList(generics.ListCreateAPIView):
     queryset = Like.objects.all()
 
     def perform_create(self, serializer):
+        print('Performing create...')
         print(self.request.data)
         serializer.save(owner=self.request.user)
 

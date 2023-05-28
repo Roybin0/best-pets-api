@@ -19,7 +19,7 @@ class PetTale(models.Model):
     )
     tldr = models.CharField(max_length=255, blank=False)
     tale = models.TextField(null=False)
-    likes = GenericRelation(Like, related_query_name='pet_tales') 
+    likes = GenericRelation(Like, related_query_name='pettale') 
 
     class Meta:
         ordering = ['-created_at']

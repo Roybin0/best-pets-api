@@ -18,7 +18,7 @@ class PetPic(models.Model):
         upload_to='images/', default='../default_post_htulnf', null=False
     )
     description = models.CharField(max_length=255, blank=True)
-    likes = GenericRelation(Like, related_query_name='pet_pics') 
+    likes = GenericRelation(Like, related_query_name='petpic') 
 
     class Meta:
         ordering = ['-created_at']

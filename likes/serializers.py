@@ -13,16 +13,19 @@ class LikeSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
     pet = serializers.PrimaryKeyRelatedField(
         queryset=Pet.objects.all(),
+        write_only=True,
         required=False,
         allow_null=True,
     )
     pet_tale = serializers.PrimaryKeyRelatedField(
         queryset=PetTale.objects.all(),
+        write_only=True,
         required=False,
         allow_null=True,
     )
     pet_pic = serializers.PrimaryKeyRelatedField(
         queryset=PetPic.objects.all(),
+        write_only=True,
         required=False,
         allow_null=True,
     )

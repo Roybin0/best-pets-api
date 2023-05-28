@@ -15,7 +15,7 @@ class PetPicSerializer(serializers.ModelSerializer):
     pet_type = serializers.ReadOnlyField(source='pet.pet_type')
     like_id = serializers.SerializerMethodField()
     comments_count = serializers.ReadOnlyField()
-    likes_count = serializers.ReadOnlyField()
+    likes_count = serializers.SerializerMethodField()
 
     # Set owner automatically based on current logged in user
     def __init__(self, *args, **kwargs):
@@ -60,6 +60,9 @@ class PetPicSerializer(serializers.ModelSerializer):
             ).first()
             return like.id if like else None
         return None
+    
+    def get_likes_count(self, obj):
+        return obj.likes.count()
     
     class Meta:
         model = PetPic

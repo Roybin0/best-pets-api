@@ -22,7 +22,10 @@ class PetPicSerializer(serializers.ModelSerializer):
         super().__init__(*args, **kwargs)
         if self.context.get('request'):
             user = self.context['request'].user
-            self.fields['pet_id'].queryset = Pet.objects.filter(owner=user)
+            if user.is_authenticated:
+                self.fields['pet_id'].queryset = Pet.objects.filter(owner=user)
+            else:
+                self.fields['pet_id'].queryset = Pet.objects.none()
 
     # Extract id from Pet object and add as pet_id to PetPic
     def create(self, validated_data):

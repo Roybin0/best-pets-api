@@ -1,4 +1,5 @@
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, viewsets
+from rest_framework.permissions import IsAuthenticated
 from bp_api.permissions import IsOwnerOrReadOnly
 from .models import Like
 from .serializers import LikeSerializer
@@ -19,3 +20,9 @@ class LikeDetail(generics.RetrieveDestroyAPIView):
     permission_classes = [IsOwnerOrReadOnly]
     serializer_class = LikeSerializer
     queryset = Like.objects.all()
+
+
+class LikeViewSet(viewsets.ModelViewSet):
+    queryset = Like.objects.all()
+    serializer_class = LikeSerializer
+    permission_classes = [IsAuthenticated]

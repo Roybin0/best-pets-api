@@ -60,12 +60,15 @@ class LikeSerializer(serializers.ModelSerializer):
         content_type = validated_data['content_type']
         object_id = validated_data['object_id']
 
+        # Convert the string content_type to the actual ContentType model
+        content_type_model = ContentType.objects.get(model=content_type)
+
         try:
             # Check if the like already exists
-            Like.objects.get(owner=owner, content_type=content_type, object_id=object_id)
+            Like.objects.get(owner=owner, content_type=content_type_model, object_id=object_id)
             raise serializers.ValidationError("Like already exists for the provided object_id.")
         except Like.DoesNotExist:
             # Create a new like if it doesn't exist
-            Like.objects.create(owner=owner, content_type=content_type, object_id=object_id)
+            like = Like.objects.create(owner=owner, content_type=content_type_model, object_id=object_id)
 
-        return validated_data
+        return like

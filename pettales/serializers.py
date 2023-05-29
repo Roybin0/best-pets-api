@@ -21,7 +21,10 @@ class PetTaleSerializer(serializers.ModelSerializer):
         super().__init__(*args, **kwargs)
         if self.context.get('request'):
             user = self.context['request'].user
-            self.fields['pet'].queryset = Pet.objects.filter(owner=user)
+            if user.is_authenticated:
+                self.fields['pet'].queryset = Pet.objects.filter(owner=user)
+            else:
+                self.fields['pet'].queryset = Pet.objects.none()
 
     def validate_image(self, value):
         if value.size > 1024 * 1024 * 2:

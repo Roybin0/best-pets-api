@@ -1,5 +1,6 @@
-from rest_framework import generics, permissions, viewsets
+from rest_framework import generics, permissions, viewsets, filters
 from rest_framework.permissions import IsAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
 from bp_api.permissions import IsOwnerOrReadOnly
 from .models import Like
 from .serializers import LikeSerializer
@@ -10,9 +11,24 @@ class LikeList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     queryset = Like.objects.all()
 
+    filter_backends = [
+        filters.SearchFilter,
+        DjangoFilterBackend,
+    ]
+
+    search_fields = [
+        'owner',
+        'content_type',
+        'object_id',
+    ]
+
+    filterset_fields = [
+        'owner',
+        'content_type',
+        'object_id',
+    ]
+
     def perform_create(self, serializer):
-        print('Performing create...')
-        print(self.request.data)
         serializer.save(owner=self.request.user)
 
 

@@ -3,22 +3,29 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 from likes.models import Like 
 from pets.models import Pet
-from pets.serializers import PetSerializer
+# from pets.serializers import PetSerializer
 from pettales.models import PetTale
-from pettales.serializers import PetTaleSerializer
+# from pettales.serializers import PetTaleSerializer
 from petpics.models import PetPic
-from petpics.serializers import PetPicSerializer
+# from petpics.serializers import PetPicSerializer
 
-class ContentTypeField(serializers.Field):
+class ContentTypeField(serializers.ChoiceField):
+    def __init__(self, **kwargs):
+        choices = [
+            ('pet', 'pet'),
+            ('pettale', 'pettale'),
+            ('petpic', 'petpic')
+        ]
+        super().__init__(choices, **kwargs)
+
     def to_representation(self, value):
         return value.model
 
     def to_internal_value(self, data):
         try:
-            return ContentType.objects.get(model=data.lower())
+            return ContentType.objects.get(model=data.lower()).model
         except ContentType.DoesNotExist:
             raise serializers.ValidationError("Invalid content type.")
-
 
 class LikeSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
@@ -29,7 +36,7 @@ class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Like
         fields = ['owner', 'content_type', 'object_id', 'like_id', 'created_at']
-    
+
     def validate_object_id(self, value):
         content_type = self.initial_data.get('content_type')
 
@@ -38,10 +45,10 @@ class LikeSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("Invalid pet object id.")
         elif content_type == 'pettale':
             if not PetTale.objects.filter(pk=value).exists():
-                raise serializers.ValidationError("Invalid pettale object id.")
+                raise serializers.ValidationError("Invalid pet tale object id.")
         elif content_type == 'petpic':
             if not PetPic.objects.filter(pk=value).exists():
-                raise serializers.ValidationError("Invalid petpic object id.")
+                raise serializers.ValidationError("Invalid pet pic object id.")
         else:
             raise serializers.ValidationError("Invalid content type.")
 

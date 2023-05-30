@@ -9,34 +9,26 @@ from pettales.serializers import PetTaleSerializer
 from petpics.models import PetPic
 from petpics.serializers import PetPicSerializer
 
+class ContentTypeField(serializers.Field):
+    def to_representation(self, value):
+        return value.model
+
+    def to_internal_value(self, data):
+        try:
+            return ContentType.objects.get(model=data.lower())
+        except ContentType.DoesNotExist:
+            raise serializers.ValidationError("Invalid content type.")
+
 
 class LikeSerializer(serializers.ModelSerializer):
     owner = serializers.ReadOnlyField(source='owner.username')
-    content_type = serializers.ChoiceField(choices=[
-        ('pet', 'Pet'),
-        ('pettale', 'PetTale'),
-        ('petpic', 'PetPic')
-    ])
+    content_type = ContentTypeField()
     object_id = serializers.IntegerField(required=False, allow_null=True)
     like_id = serializers.IntegerField(source='id', read_only=True)
 
     class Meta:
         model = Like
         fields = ['owner', 'content_type', 'object_id', 'like_id', 'created_at']
-
-    def to_representation(self, instance):
-        representation = super().to_representation(instance)
-        content_type = instance.content_type
-
-        # Convert content_type to a JSON serializable format
-        content_type_data = {
-            'key': content_type.model,
-            'display_name': content_type.name
-        }
-
-        representation['content_type'] = content_type_data
-
-        return representation
     
     def validate_object_id(self, value):
         content_type = self.initial_data.get('content_type')

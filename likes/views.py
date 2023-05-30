@@ -17,13 +17,13 @@ class LikeList(generics.ListCreateAPIView):
     ]
 
     search_fields = [
-        'owner',
+        'owner__username',
         'content_type',
         'object_id',
     ]
 
     filterset_fields = [
-        'owner',
+        'owner__username',
         'content_type',
         'object_id',
     ]

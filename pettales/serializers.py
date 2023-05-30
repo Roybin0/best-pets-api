@@ -13,7 +13,6 @@ class PetTaleSerializer(serializers.ModelSerializer):
     pet = serializers.PrimaryKeyRelatedField(queryset=Pet.objects.all())
     pet_name = serializers.ReadOnlyField(source='pet.name')
     pet_type = serializers.ReadOnlyField(source='pet.pet_type')
-    like_id = serializers.SerializerMethodField()
     comments_count = serializers.ReadOnlyField()
     likes_count = serializers.ReadOnlyField()
 
@@ -48,21 +47,11 @@ class PetTaleSerializer(serializers.ModelSerializer):
         if request and request.user.is_authenticated:
             return request.user == obj.owner
         return False
-
-    def get_like_id(self, obj):
-        request = self.context.get('request')
-        user = request.user if request and request.user.is_authenticated else None
-        if user:
-            like = Like.objects.filter(
-                owner=user, content_type=ContentType.objects.get_for_model(PetTale), object_id=obj.id
-            ).first()
-            return like.id if like else None
-        return None
     
     class Meta:
         model = PetTale
         fields = [
             'id', 'owner', 'pet', 'pet_name', 'pet_type', 'created_at', 
             'updated_at', 'image', 'tldr', 'tale', 'is_owner', 'owner_id',
-            'owner_profile_image', 'like_id', 'comments_count', 'likes_count',
+            'owner_profile_image', 'comments_count', 'likes_count',
         ]

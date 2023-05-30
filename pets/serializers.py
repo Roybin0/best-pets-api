@@ -9,7 +9,6 @@ class PetSerializer(serializers.ModelSerializer):
     is_owner = serializers.SerializerMethodField()
     owner_id = serializers.ReadOnlyField(source='owner.owner.id')
     owner_profile_image = serializers.ReadOnlyField(source='owner.owner.image.url')
-    like_id = serializers.SerializerMethodField()
     likes_count = serializers.SerializerMethodField()
 
     def validate_image(self, value):
@@ -33,16 +32,6 @@ class PetSerializer(serializers.ModelSerializer):
         request = self.context['request']
         return request.user == obj.owner
     
-    def get_like_id(self, obj):
-        request = self.context.get('request')
-        user = request.user if request and request.user.is_authenticated else None
-        if user:
-            like = Like.objects.filter(
-                owner=user, content_type=ContentType.objects.get_for_model(Pet), object_id=obj.id
-            ).first()
-            return like.id if like else None
-        return None
-    
     def get_likes_count(self, obj):
         return obj.likes.count()
     
@@ -51,5 +40,5 @@ class PetSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'owner', 'name', 'pet_type', 'created_at',
             'updated_at', 'image', 'about', 'is_owner', 'owner_id',
-            'owner_profile_image', 'like_id', 'likes_count',
+            'owner_profile_image', 'likes_count',
         ] 

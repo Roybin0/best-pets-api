@@ -16,6 +16,7 @@ class CommentList(generics.ListCreateAPIView):
     filterset_fields = [
         'pet_tale',
         'pet_pic',
+        'pet',
     ]
 
     def get_queryset(self):

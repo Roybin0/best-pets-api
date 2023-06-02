@@ -4,6 +4,7 @@ from rest_framework import serializers
 from .models import Comment
 from pettales.serializers import PetTaleSerializer
 from petpics.serializers import PetPicSerializer
+from pets.serializers import PetSerializer
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -29,7 +30,11 @@ class CommentSerializer(serializers.ModelSerializer):
         validated_data['owner'] = request.user
 
         # Check if comment is for a PetTale or PetPic
-        if 'pet_tale' in validated_data:
+        if 'pet' in validated_data:
+            pet = validated_data.pop('pet')
+            if pet:
+                validated_data['pet_id'] = pet.id
+        elif 'pet_tale' in validated_data:
             pet_tale = validated_data.pop('pet_tale')
             if pet_tale:
                 validated_data['pet_tale_id'] = pet_tale.id
@@ -43,7 +48,7 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = [
-            'id', 'owner', 'pet_tale', 'pet_pic',
+            'id', 'owner', 'pet', 'pet_tale', 'pet_pic',
             'created_at', 'updated_at', 'comment', 'is_owner', 'owner_id',
             'owner_profile_image',
         ]
@@ -52,3 +57,4 @@ class CommentSerializer(serializers.ModelSerializer):
 class CommentDetailSerializer(CommentSerializer):
     pet_tale = PetTaleSerializer(read_only=True)
     pet_pic = PetPicSerializer(read_only=True)
+    pet = PetSerializer(read_only=True)

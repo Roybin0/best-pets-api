@@ -1,7 +1,8 @@
 from rest_framework import serializers
+from django.contrib.contenttypes.models import ContentType
 from .models import Pet
 from likes.models import Like
-from django.contrib.contenttypes.models import ContentType
+from comments.models import Comment
 
 
 class PetSerializer(serializers.ModelSerializer):
@@ -35,6 +36,9 @@ class PetSerializer(serializers.ModelSerializer):
     
     def get_likes_count(self, obj):
         return obj.likes.count()
+    
+    def get_comments_count(self, obj):
+        return Comment.objects.filter(pet=obj).count()
     
     class Meta:
         model = Pet

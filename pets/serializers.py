@@ -10,7 +10,7 @@ class PetSerializer(serializers.ModelSerializer):
     owner_id = serializers.ReadOnlyField(source='owner.owner.id')
     owner_profile_image = serializers.ReadOnlyField(source='owner.owner.image.url')
     likes_count = serializers.SerializerMethodField()
-    comments_count = serializers.ReadOnlyField()
+    comments_count = serializers.SerializerMethodField()
 
     def validate_image(self, value):
         if value.size > 1024 * 1024 * 2:

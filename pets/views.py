@@ -13,6 +13,7 @@ class PetList(generics.ListCreateAPIView):
     queryset = Pet.objects.all()
 
     filter_backends = [
+        filters.OrderingFilter,
         filters.SearchFilter,
         DjangoFilterBackend,
     ]
@@ -27,6 +28,13 @@ class PetList(generics.ListCreateAPIView):
         'owner',
         'name',
         'pet_type',
+    ]
+
+    ordering_fields = [
+        'likes_count',
+        'likes__created_at',
+        'comments_count',
+        'followers_count',
     ]
     
     def filter_queryset(self, queryset):

@@ -15,14 +15,6 @@ class OwnerList(generics.ListAPIView):
     List all owners.
     No create view as owner creation is handled by django signals.
     """
-    # queryset = Owner.objects.annotate(
-    #     pets_count=Count('owner__pet', distinct=True),
-    #     pettales_count=Count('owner__pettale', distinct=True),
-    #     petpics_count=Count('owner__petpic', distinct=True),
-    #     followers_count=Count('owner__followed_owner', distinct=True),
-    #     following_count_owners=Count('owner__following', distinct=True),
-    #     following_count_pets=Count('owner__followed_pet', distinct=True),
-    # )
     queryset = Owner.objects.all()
     serializer_class = OwnerSerializer
 
@@ -31,9 +23,9 @@ class OwnerList(generics.ListAPIView):
         DjangoFilterBackend,
     ]
     filterset_fields = [
-        'owner__following__followed_owner__owner',
-        'owner__following__followed_pet__owner',
-        'owner__followedOwner__owner__owner',
+        'owner__following__followed_owner',
+        'owner__following__followed_pet',
+        'owner__followedOwner__owner',
     ]
     ordering_fields = [
         'pets_count',

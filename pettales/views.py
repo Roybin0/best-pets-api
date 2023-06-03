@@ -24,7 +24,7 @@ class PetTaleList(generics.ListCreateAPIView):
     ]
 
     filterset_fields = [
-        'owner__followed__owner__owner',
+        'owner__followedOwner__owner__owner',
         'likes__owner',
         'owner__owner',
     ]

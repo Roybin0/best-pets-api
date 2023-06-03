@@ -3,6 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from .models import Pet
 from likes.models import Like
 from comments.models import Comment
+from followers.models import Follower
 
 
 class PetSerializer(serializers.ModelSerializer):
@@ -12,7 +13,7 @@ class PetSerializer(serializers.ModelSerializer):
     owner_profile_image = serializers.ReadOnlyField(source='owner.owner.image.url')
     likes_count = serializers.SerializerMethodField()
     comments_count = serializers.SerializerMethodField()
-    followers_count = serializers.ReadOnlyField()
+    followers_count = serializers.SerializerMethodField()
 
     def validate_image(self, value):
         if value.size > 1024 * 1024 * 2:
@@ -40,6 +41,9 @@ class PetSerializer(serializers.ModelSerializer):
     
     def get_comments_count(self, obj):
         return Comment.objects.filter(pet=obj).count()
+    
+    def get_followers_count(self, obj):
+        return Follower.objects.filter(followed_pet=obj).count()
     
     class Meta:
         model = Pet

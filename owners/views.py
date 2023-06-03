@@ -33,7 +33,7 @@ class OwnerList(generics.ListAPIView):
     filterset_fields = [
         'owner__following__followed_owner__owner',
         'owner__following__followed_pet__owner',
-        # 'owner__followed__owner__owner',
+        'owner__followedOwner__owner__owner',
     ]
     ordering_fields = [
         'pets_count',

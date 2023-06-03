@@ -7,16 +7,17 @@ class Follower(models.Model):
     """
     Follower model, related to 'owner' and 'followed'.
     'owner' is a User that is following a User.
-    'followed' is a User that is followed by 'owner'.
+    'followedOwner' is a User that is followed by 'owner'.
+    'followedPet' is a Pet that is followed by 'owner'.
     """
     owner = models.ForeignKey(
         User, related_name='following', on_delete=models.CASCADE
     )
     followed_owner = models.ForeignKey(
-        User, related_name='followed', on_delete=models.CASCADE, blank=True, null=True
+        User, related_name='followedOwner', on_delete=models.CASCADE, blank=True, null=True
     )
     followed_pet = models.ForeignKey(
-        Pet, related_name='followed', on_delete=models.CASCADE, blank=True, null=True
+        Pet, related_name='followedPet', on_delete=models.CASCADE, blank=True, null=True
     )
     created_at = models.DateTimeField(auto_now_add=True)
 

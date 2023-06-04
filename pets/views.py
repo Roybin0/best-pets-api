@@ -29,7 +29,7 @@ class PetList(generics.ListCreateAPIView):
         'owner',
         'name',
         'pet_type',
-        'followedPet'
+        'followed_pet'
     ]
 
     ordering_fields = [
@@ -49,7 +49,7 @@ class PetList(generics.ListCreateAPIView):
             # Filter the queryset by owner username using case-insensitive matching
             queryset = queryset.filter(owner__username__iexact=owner_username)
         
-        queryset = queryset.annotate(followers_count=Count('followedPet', distinct=True))
+        queryset = queryset.annotate(followers_count=Count('followed_pet', distinct=True))
 
         return queryset
 

@@ -1,19 +1,46 @@
 from rest_framework import generics, permissions
 from bp_api.permissions import IsOwnerOrReadOnly
-from .models import Follower
-from .serializers import FollowerSerializer
+from .models import OwnerFollower, PetFollower
+from .serializers import OwnerFollowerSerializer, PetFollowerSerializer
 
 
-class FollowerList(generics.ListCreateAPIView):
-    serializer_class = FollowerSerializer
+class OwnerFollowerList(generics.ListCreateAPIView):
+    serializer_class = OwnerFollowerSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    queryset = Follower.objects.all()
+
+    def get_queryset(self):
+        user = self.request.user
+        return OwnerFollower.objects.filter(owner=user)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
 
-class FollowerDetail(generics.RetrieveDestroyAPIView):
+class OwnerFollowerDetail(generics.RetrieveDestroyAPIView):
     permission_classes = [IsOwnerOrReadOnly]
-    serializer_class = FollowerSerializer
-    queryset = Follower.objects.all()
+    serializer_class = OwnerFollowerSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return OwnerFollower.objects.filter(owner=user)
+
+
+class PetFollowerList(generics.ListCreateAPIView):
+    serializer_class = PetFollowerSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    def get_queryset(self):
+        user = self.request.user
+        return PetFollower.objects.filter(owner=user)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
+class PetFollowerDetail(generics.RetrieveDestroyAPIView):
+    permission_classes = [IsOwnerOrReadOnly]
+    serializer_class = PetFollowerSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return PetFollower.objects.filter(owner=user)

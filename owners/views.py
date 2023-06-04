@@ -5,7 +5,7 @@ from .models import Owner
 from pets.models import Pet
 from pettales.models import PetTale
 from petpics.models import PetPic
-from followers.models import Follower
+from followers.models import OwnerFollower, PetFollower
 from .serializers import OwnerSerializer
 from bp_api.permissions import IsOwnerOrReadOnly
 
@@ -25,7 +25,7 @@ class OwnerList(generics.ListAPIView):
     filterset_fields = [
         'owner__following__followed_owner',
         'owner__following__followed_pet',
-        'owner__followedOwner__owner',
+        'owner__followed_owner__owner',
     ]
     ordering_fields = [
         'pets_count',
@@ -40,13 +40,14 @@ class OwnerList(generics.ListAPIView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
+        queryset = queryset.order_by('id')
         queryset = queryset.annotate(
             pets_count=Count('owner__pet', distinct=True),
             pettales_count=Count('owner__pettale', distinct=True),
             petpics_count=Count('owner__petpic', distinct=True),
-            followers_count=Count('owner__followedOwner', distinct=True),
-            following_count_owners=Count('owner__following', distinct=True),
-            following_count_pets=Count('owner__pet__followedPet', distinct=True),
+            followers_count=Count('owner__followed_owner', distinct=True),
+            following_count_owners=Count('owner__following__followed_owner', distinct=True),
+            following_count_pets=Count('owner__following__followed_pet', distinct=True),
         )
         return queryset
 

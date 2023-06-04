@@ -3,32 +3,37 @@ from django.contrib.auth.models import User
 from pets.models import Pet
 
 
-class Follower(models.Model):
+class OwnerFollower(models.Model):
     """
-    Follower model, related to 'owner' and 'followed'.
+    OwnerFollower model, related to 'owner' and 'followed'.
     'owner' is a User that is following a User.
-    'followedOwner' is a User that is followed by 'owner'.
-    'followedPet' is a Pet that is followed by 'owner'.
+    'followed_owner' is a User that is followed by 'owner'.
     """
-    owner = models.ForeignKey(
-        User, related_name='following', on_delete=models.CASCADE
-    )
-    followed_owner = models.ForeignKey(
-        User, related_name='followedOwner', on_delete=models.CASCADE, blank=True, null=True
-    )
-    followed_pet = models.ForeignKey(
-        Pet, related_name='followedPet', on_delete=models.CASCADE, blank=True, null=True
-    )
+    owner = models.ForeignKey(User, related_name='owner_following', on_delete=models.CASCADE)
+    followed_owner = models.ForeignKey(User, related_name='followed_owner', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ['-created_at']
-        unique_together = ['owner', 'followed_owner', 'followed_pet']
+        unique_together = ['owner', 'followed_owner']
 
     def __str__(self):
-        if self.followed_owner:
-            return f'{self.owner} is following user: {self.followed_owner}'
-        elif self.followed_pet:
-            return f'{self.owner} is following pet: {self.followed_pet}'
-        else:
-            return f'{self.owner} is not following anyone'
+        return f'{self.owner} is following user: {self.followed_owner}'
+
+
+class PetFollower(models.Model):
+    """
+    PetFollower model, related to 'owner' and 'followed'.
+    'owner' is a User that is following a User.
+    'followed_pet' is a Pet that is followed by 'owner'.
+    """
+    owner = models.ForeignKey(User, related_name='pet_following', on_delete=models.CASCADE)
+    followed_pet = models.ForeignKey(Pet, related_name='followed_pet', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        unique_together = ['owner', 'followed_pet']
+
+    def __str__(self):
+        return f'{self.owner} is following pet: {self.followed_pet}'

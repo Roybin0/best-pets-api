@@ -1,5 +1,6 @@
 from rest_framework import generics, permissions, filters
 from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import Count
 from .models import Pet
 from .serializers import PetSerializer
 from bp_api.permissions import IsOwnerOrReadOnly
@@ -28,6 +29,7 @@ class PetList(generics.ListCreateAPIView):
         'owner',
         'name',
         'pet_type',
+        'followedPet'
     ]
 
     ordering_fields = [
@@ -46,6 +48,8 @@ class PetList(generics.ListCreateAPIView):
         if owner_username:
             # Filter the queryset by owner username using case-insensitive matching
             queryset = queryset.filter(owner__username__iexact=owner_username)
+        
+        queryset = queryset.annotate(followers_count=Count('followedPet', distinct=True))
 
         return queryset
 

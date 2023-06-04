@@ -9,8 +9,7 @@ class OwnerFollowerList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        user = self.request.user
-        return OwnerFollower.objects.filter(owner=user)
+        return OwnerFollower.objects.all()
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -30,9 +29,8 @@ class PetFollowerList(generics.ListCreateAPIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
-        user = self.request.user
-        return PetFollower.objects.filter(owner=user)
-
+        return PetFollower.objects.all()
+    
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 

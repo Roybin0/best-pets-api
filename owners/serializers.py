@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Owner
-from followers.models import OwnerFollower, PetFollower
+from followers.models import OwnerFollower
 
 
 class OwnerSerializer(serializers.ModelSerializer):
@@ -12,8 +12,7 @@ class OwnerSerializer(serializers.ModelSerializer):
     followers_count = serializers.ReadOnlyField()
     following_count_owners = serializers.ReadOnlyField()
     following_count_pets = serializers.ReadOnlyField()
-    owner_following_id = serializers.SerializerMethodField()
-    pet_following_id = serializers.SerializerMethodField()
+    following_id = serializers.SerializerMethodField()
 
     def get_is_owner(self, obj):
         request = self.context.get('request')
@@ -21,20 +20,11 @@ class OwnerSerializer(serializers.ModelSerializer):
             return request.user == obj.owner
         return False
     
-    def get_owner_following_id(self, obj):
+    def get_following_id(self, obj):
         user = self.context['request'].user
         if user.is_authenticated:
             following = OwnerFollower.objects.filter(
-                owner=user, followed=obj.owner
-            ).first()
-            return following.id if following else None
-        return None
-    
-    def get_pet_following_id(self, obj):
-        user = self.context['request'].user
-        if user.is_authenticated:
-            following = PetFollower.objects.filter(
-                owner=user, followed=obj.owner
+                owner=user, followed_owner=obj.owner
             ).first()
             return following.id if following else None
         return None
@@ -53,7 +43,6 @@ class OwnerSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'owner', 'name', 'created_at', 'updated_at',
             'image', 'about', 'is_owner', 'following_id',
-            'pets_count', 'pettales_count', 'petpics_count',
-            'followers_count', 'following_count_owners', 
-            'following_count_pets',
+            'pets_count', 'pettales_count', 'petpics_count', 
+            'followers_count', 'following_count_owners', 'following_count_pets',
         ]

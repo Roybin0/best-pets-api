@@ -2,10 +2,6 @@ from django.db.models import Count
 from rest_framework import generics, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Owner
-from pets.models import Pet
-from pettales.models import PetTale
-from petpics.models import PetPic
-from followers.models import OwnerFollower, PetFollower
 from .serializers import OwnerSerializer
 from bp_api.permissions import IsOwnerOrReadOnly
 
@@ -23,8 +19,8 @@ class OwnerList(generics.ListAPIView):
         DjangoFilterBackend,
     ]
     filterset_fields = [
-        'owner__following__followed_owner',
-        'owner__following__followed_pet',
+        'owner__owner_following__owner',
+        'owner__pet__followed_pet',
         'owner__followed_owner__owner',
     ]
     ordering_fields = [
@@ -46,8 +42,8 @@ class OwnerList(generics.ListAPIView):
             pettales_count=Count('owner__pettale', distinct=True),
             petpics_count=Count('owner__petpic', distinct=True),
             followers_count=Count('owner__followed_owner', distinct=True),
-            following_count_owners=Count('owner__following__followed_owner', distinct=True),
-            following_count_pets=Count('owner__following__followed_pet', distinct=True),
+            following_count_owners=Count('owner__owner_following__followed_owner', distinct=True),
+            following_count_pets=Count('owner__pet_following__followed_pet', distinct=True),
         )
         return queryset
 

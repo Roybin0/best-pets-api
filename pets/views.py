@@ -6,6 +6,24 @@ from .serializers import PetSerializer
 from bp_api.permissions import IsOwnerOrReadOnly
 
 
+class FollowersCountOrderingFilter(filters.OrderingFilter):
+    def get_ordering(self, request, queryset, view):
+        ordering = super().get_ordering(request, queryset, view)
+
+        if ordering:
+            modified_ordering = []
+            for field in ordering:
+                if field == 'followers_count':
+                    modified_ordering.append('followed_pet__count')
+                elif field == '-followers_count':
+                    modified_ordering.append('-followed_pet__count')
+                else:
+                    modified_ordering.append(field)
+            return modified_ordering
+
+        return ordering
+
+
 class PetList(generics.ListCreateAPIView):
     serializer_class = PetSerializer
     permission_classes = [
@@ -14,7 +32,7 @@ class PetList(generics.ListCreateAPIView):
     queryset = Pet.objects.all()
 
     filter_backends = [
-        filters.OrderingFilter,
+        FollowersCountOrderingFilter,
         filters.SearchFilter,
         DjangoFilterBackend,
     ]

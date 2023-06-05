@@ -9,9 +9,9 @@ class OwnerSerializer(serializers.ModelSerializer):
     pets_count = serializers.SerializerMethodField()
     pettales_count = serializers.SerializerMethodField()
     petpics_count = serializers.SerializerMethodField()
-    followers_count = serializers.ReadOnlyField()
-    following_count_owners = serializers.ReadOnlyField()
-    following_count_pets = serializers.ReadOnlyField()
+    followers_count = serializers.SerializerMethodField()
+    following_count_owners = serializers.SerializerMethodField()
+    following_count_pets = serializers.SerializerMethodField()
     following_id = serializers.SerializerMethodField()
 
     def get_is_owner(self, obj):
@@ -37,6 +37,16 @@ class OwnerSerializer(serializers.ModelSerializer):
 
     def get_petpics_count(self, obj):
         return obj.owner.petpic_set.count()
+    
+    def get_followers_count(self, obj):
+        return obj.owner.followed_owner.count()
+    
+    def get_following_count_owners(self, obj):
+        return obj.owner.owner_following.count()
+    
+    def get_following_count_pets(self, obj):
+        return obj.owner.pet_following.count()
+    
 
     class Meta:
         model = Owner

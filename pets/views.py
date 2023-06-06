@@ -47,7 +47,7 @@ class PetList(generics.ListCreateAPIView):
         'owner',
         'name',
         'pet_type',
-        'followed_pet'
+        'followed_pet__owner'
     ]
 
     ordering_fields = [

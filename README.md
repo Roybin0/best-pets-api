@@ -1,39 +1,80 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# Best Pets API
 
-Welcome,
+## Introduction
+Best Pets API is a Django REST Framework application designed to provide the back-end functionality for the [Best Pets front-end React application](https://github.com/Roybin0/best-pets). It offers a set of APIs to handle user authentication, pet profiles, pet tales, and other related features. 
 
-This is the Code Institute student template for Codeanywhere. We have preinstalled all of the tools you need to get started. It's perfectly ok to use this template as the basis for your project submissions.
+The link to the deployed API can be found [here](https://bestpets-api.herokuapp.com/)
 
-You can safely delete this README.md file, or change it for your own project. Please do read it at least once, though! It contains some important information about Codeanywhere and the extensions we use. Some of this information has been updated since the video content was created. The last update to this file was: **May 11th, 2023**
+This README provides an overview of the API and outlines the deployment process.
 
-## Codeanywhere Reminders
+## Table of Contents
+1. [Deployment](#deployment)
+2. [User Authentication](#user-authentication)
+3. [API Endpoints](#api-endpoints)
+4. [Manual Testing](#manual-testing)
+5. [Credits](#credits)
+6. [Acknowledgements](#acknowledgements)
 
-To run a frontend (HTML, CSS, Javascript only) application in Codeanywhere, in the terminal, type:
+## Deployment
+To deploy the Best Pets API locally, follow these steps:
 
-`python3 -m http.server`
+1. Clone the repository: `git clone https://github.com/your/repository.git`
+2. Install the necessary dependencies: `pip install -r requirements.txt`
+3. Set up the database:
+   - Create a new PostgreSQL database.
+   - Update the database configuration in the settings file.
+   - Run the migrations: `python manage.py migrate`
+4. Start the development server: `python manage.py runserver`
+5. The API will be available at `http://localhost:8000/`.
 
-A button should appear to click: _Open Preview_ or _Open Browser_.
+## User Authentication
+The Best Pets API uses [dj-rest-auth](https://dj-rest-auth.readthedocs.io/) for user authentication. It provides a set of endpoints for user registration, login, logout, password reset, and more. 
 
-To run a frontend (HTML, CSS, Javascript only) application in Codeanywhere with no-cache, you can use this alias for `python3 -m http.server`.
+- `POST /bestpets-api.herokuapp.com/api-auth/login/` - Log in an existing user.
+- `POST /bestpets-api.herokuapp.com/api-auth/logout/` - Log out the currently authenticated user.
 
-`http_server`
+For more information on how to use dj-rest-auth, refer to the [documentation](https://dj-rest-auth.readthedocs.io/).
 
-To run a backend Python file, type `python3 app.py`, if your Python file is named `app.py` of course.
+## API Endpoints
+The Best Pets API offers the following main endpoints:
 
-A button should appear to click: _Open Preview_ or _Open Browser_.
+- `/bestpets-api.herokuapp.com/pets/` - Endpoint for creating and managing pet profiles.
+- `/bestpets-api.herokuapp.com/pettales/` - Endpoint for creating and managing pet tales.
+- `/bestpets-api.herokuapp.com/petpics/` - Endpoint for creating and managing pet pics.
+- `/bestpets-api.herokuapp.com/owners/` - Endpoint for creating and managing pet owner profiles.
+- `/bestpets-api.herokuapp.com/followers-owners/` - Endpoint related to followers of other users.
+- `/bestpets-api.herokuapp.com/followers-pets/` - Endpoint related to followers of pets.
+- `/bestpets-api.herokuapp.com/comments/` - Endpoint for creating and managing comments.
+- `/bestpets-api.herokuapp.com/likes/` - Endpoint for creating and managing likes.
 
-In Codeanywhere you have superuser security privileges by default. Therefore you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the lessons.
+For detailed information about each endpoint, including request/response formats and required authentication, refer to the API documentation or explore the codebase.
 
-To log into the Heroku toolbelt CLI:
+## Manual Testing
+Basic manual testing has been carried out to ensure the functionality of the Best Pets API. The following areas have been tested:
 
-1. Log in to your Heroku account and go to _Account Settings_ in the menu under your avatar.
-2. Scroll down to the _API Key_ and click _Reveal_
-3. Copy the key
-4. In Codeanywhere, from the terminal, run `heroku_config`
-5. Paste in your API key when asked
+1. User Registration and Login:
+   - Registering a new user.
+   - Logging in with valid credentials.
+   - Logging in with invalid credentials.
+   - Logging out.
 
-You can now use the `heroku` CLI program - try running `heroku apps` to confirm it works. This API key is unique and private to you so do not share it. If you accidentally make it public then you can create a new one with _Regenerate API Key_.
+2. Pet Profiles:
+   - Creating a new pet profile.
+   - Retrieving a list of pet profiles.
+   - Updating and deleting a pet profile.
 
----
+3. Pet Tales:
+   - Creating a new pet tale.
+   - Retrieving a list of pet tales.
+   - Updating and deleting a pet tale.
 
-Happy coding!
+4. Likes and Comments:
+   - Liking and unliking content.
+   - Adding a comment to a pet tale.
+   - Editing and deleting comments.
+
+## Credits
+The Best Pets API was inspired by Code Institute's [DRF API tutorial](https://github.com/Code-Institute-Solutions/drf-api). It was built using Django REST Framework and incorporates various libraries and tools to handle user authentication, data storage, and API functionality.
+
+## Acknowledgements
+Special thanks to Charlotte and Carolann for their support and assistance during the development of the Best Pets API. Many thanks to everyone who supplied endless images of their pets!

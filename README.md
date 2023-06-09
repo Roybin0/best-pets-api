@@ -3,7 +3,7 @@
 ## Introduction
 Best Pets API is a Django REST Framework application designed to provide the back-end functionality for the [Best Pets front-end React application](https://github.com/Roybin0/best-pets). It offers a set of APIs to handle user authentication, pet profiles, pet tales, and other related features. 
 
-The link to the deployed API can be found [here](https://bestpets-api.herokuapp.com/)
+The link to the deployed API can be found [here](https://bestpets-api.herokuapp.com/) and you can find the full list of User Stories on our Project Board: [Best Pets](https://github.com/users/Roybin0/projects/6/views/1).
 
 This README provides an overview of the API and outlines the deployment process.
 
